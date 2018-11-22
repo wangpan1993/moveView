@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        minSdkVersion 12
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.1"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    resourcePrefix "mis_"
+}
+android {
+    lintOptions {
+        abortOnError false
+    }
+}
+
+task makeJar(type: Jar) {
+    baseName 'multi-image-selector'//指定生成的jar名
+    from('build/intermediates/')//从该目录下加载要打包的文件
+    //打包到jar后的目录结构
+//    into('com/multi/selector/')
+    //去掉不需要打包的目录和文件
+//    exclude('R.class')
+//去掉R开头的文件
+//    exclude { it.name.startsWith('R'); }
+}
+
+makeJar.dependsOn(build)
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+}
